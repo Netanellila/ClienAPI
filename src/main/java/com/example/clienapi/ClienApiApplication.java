@@ -8,7 +8,11 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+
+import java.awt.*;
 import java.io.FileOutputStream;
+import javax.swing.*;
+
 import  java.io.IOException;
 import  java.net.http.*;
 import  java.net.URI;
@@ -18,6 +22,8 @@ import java.net.http.HttpRequest;
 
 public class ClienApiApplication {
 
+    static JFrame frame = new JFrame();
+    static JLabel icon;
     public static void main(String[] args) throws IOException, InterruptedException {
 
         //first (time)
@@ -44,7 +50,16 @@ public class ClienApiApplication {
                     .header("Content-Type","application/json")
                     .GET().build();
             HttpResponse<byte[]> reque=client.send(httpRequest,HttpResponse.BodyHandlers.ofByteArray());
-            System.out.println(reque.body().length);
+            System.out.println("success to print the image");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setSize(800, 800);
+            frame.setVisible(true);
+
+
+            ImageIcon img;
+            img = new ImageIcon(reque.body());
+            icon = new JLabel(new ImageIcon(img.getImage().getScaledInstance(800, 500, Image.SCALE_SMOOTH)));
+            frame.add(icon);
         }catch (Exception e){
             System.out.println(e);
         }
